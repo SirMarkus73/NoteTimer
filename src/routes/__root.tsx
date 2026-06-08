@@ -7,6 +7,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import BetterAuthHeader from "#/integrations/better-auth/header-user";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -44,6 +45,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body>
+				<header>
+					<BetterAuthHeader />
+				</header>
 				{children}
 				<TanStackDevtools
 					config={{
