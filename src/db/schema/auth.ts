@@ -1,23 +1,7 @@
-import {
-	boolean,
-	index,
-	pgTable,
-	serial,
-	text,
-	timestamp,
-} from "drizzle-orm/pg-core";
-
-export const todos = pgTable("todos", {
-	id: serial().primaryKey(),
-	title: text().notNull(),
-	createdAt: timestamp("created_at").defaultNow(),
-});
-
-export type Todo = typeof todos.$inferSelect;
-export type NewTodo = typeof todos.$inferInsert;
-
-// Better auth
 import { relations } from "drizzle-orm";
+import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
+// Better auth generated migrations
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),

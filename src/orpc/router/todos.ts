@@ -2,7 +2,7 @@ import { ORPCError, os } from "@orpc/server";
 import { eq } from "drizzle-orm";
 import * as z from "zod";
 import { db } from "#/db";
-import { type NewTodo, todos } from "#/db/schema";
+import { type NewTodo, todos } from "#/db/schema/todos";
 import { auth } from "#/lib/auth";
 
 export const base = os.$context<{ headers: Headers }>();
