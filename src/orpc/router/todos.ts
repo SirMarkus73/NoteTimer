@@ -1,20 +1,27 @@
 import { os } from "@orpc/server";
+import { eq } from "drizzle-orm";
 import * as z from "zod";
+import { db } from "#/db";
+import { type NewTodo, todos } from "#/db/schema";
 
-const todos = [
-	{ id: 1, name: "Get groceries" },
-	{ id: 2, name: "Buy a new phone" },
-	{ id: 3, name: "Finish the project" },
-];
-
-export const listTodos = os.input(z.object({})).handler(() => {
-	return todos;
+export const listTodos = os.input(z.object({})).handler(async () => {
+	return await db.select().from(todos);
 });
 
-export const addTodo = os
+export const createTodo = os
 	.input(z.object({ name: z.string() }))
-	.handler(({ input }) => {
-		const newTodo = { id: todos.length + 1, name: input.name };
-		todos.push(newTodo);
-		return newTodo;
+	.handler(async ({ input }) => {
+		const newTodo: NewTodo = {
+			title: input.name,
+		};
+
+		return await db.insert(todos).values(newTodo).returning();
+	});
+
+export const deleteTodo = os
+	.input(z.object({ id: z.number() }))
+	.handler(async ({ input }) => {
+		await db.delete(todos).where(eq(todos.id, input.id));
+
+		return null;
 	});
