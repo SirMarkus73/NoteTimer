@@ -1,5 +1,5 @@
 import { useTodos } from "#/lib/todos/query";
-import { DeleteTodoButton } from "./DeleteTodoButton";
+import { DeleteTodoButton } from "./deleteTodoButton";
 
 export function TodoList() {
 	const { data: todos, isLoading, isError } = useTodos();

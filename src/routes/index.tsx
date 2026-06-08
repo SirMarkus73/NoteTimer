@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CreateTodoForm } from "#/components/todos/CreateTodoForm";
-import { TodoList } from "#/components/todos/TodoList";
+import { CreateTodoForm } from "#/components/todos/createTodoForm";
+import { TodoList } from "#/components/todos/todoList";
 import { authClient } from "#/lib/auth-client";
 
 export const Route = createFileRoute("/")({ component: Home });
