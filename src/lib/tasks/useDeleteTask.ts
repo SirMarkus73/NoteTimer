@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Task } from "#/db/schema/tasks";
 import { orpc } from "#/orpc/client";
 
 export function useDeleteTask() {
