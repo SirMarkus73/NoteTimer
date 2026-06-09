@@ -8,6 +8,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Header } from "#/components/header";
 import { ThemeProvider } from "#/components/themeProvider";
 import appCss from "../styles.css?url";
 
@@ -47,6 +48,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				<ThemeProvider defaultTheme="system" storageKey="theme">
+					<Header />
 					{children}
 				</ThemeProvider>
 				<TanStackDevtools
