@@ -54,8 +54,8 @@ export function Header() {
 								</NavigationMenuLink>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
-								<NavigationMenuLink render={<Link to="/dashboard/todos" />}>
-									Otra cosa
+								<NavigationMenuLink render={<Link to="/dashboard/tasks" />}>
+									Tareas
 								</NavigationMenuLink>
 							</NavigationMenuItem>
 						</NavigationMenuList>
@@ -84,7 +84,7 @@ export function Header() {
 							/>
 							<DropdownMenuContent align="end">
 								<DropdownMenuGroup>
-									<DropdownMenuItem>
+									<DropdownMenuItem render={<Link to="/dashboard/account" />}>
 										<BadgeCheckIcon />
 										Cuenta
 									</DropdownMenuItem>

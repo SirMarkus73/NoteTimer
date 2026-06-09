@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 
 import * as authSchema from "./schema/auth";
+import * as tasksSchema from "./schema/tasks";
 import * as todosSchema from "./schema/todos";
 
 if (!process.env.DATABASE_URL) {
@@ -8,5 +9,5 @@ if (!process.env.DATABASE_URL) {
 }
 
 export const db = drizzle(process.env.DATABASE_URL, {
-	schema: { ...authSchema, ...todosSchema },
+	schema: { ...authSchema, ...todosSchema, ...tasksSchema },
 });

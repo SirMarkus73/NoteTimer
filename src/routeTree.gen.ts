@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardTodosRouteImport } from './routes/dashboard/todos'
+import { Route as DashboardTasksRouteImport } from './routes/dashboard/tasks'
+import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
@@ -25,6 +27,16 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardTodosRoute = DashboardTodosRouteImport.update({
   id: '/dashboard/todos',
   path: '/dashboard/todos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardTasksRoute = DashboardTasksRouteImport.update({
+  id: '/dashboard/tasks',
+  path: '/dashboard/tasks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAccountRoute = DashboardAccountRouteImport.update({
+  id: '/dashboard/account',
+  path: '/dashboard/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -58,6 +70,8 @@ export interface FileRoutesByFullPath {
   '/api/$': typeof ApiSplatRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/tasks': typeof DashboardTasksRoute
   '/dashboard/todos': typeof DashboardTodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -67,6 +81,8 @@ export interface FileRoutesByTo {
   '/api/$': typeof ApiSplatRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/tasks': typeof DashboardTasksRoute
   '/dashboard/todos': typeof DashboardTodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -77,6 +93,8 @@ export interface FileRoutesById {
   '/api/$': typeof ApiSplatRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/tasks': typeof DashboardTasksRoute
   '/dashboard/todos': typeof DashboardTodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -88,6 +106,8 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/account'
+    | '/dashboard/tasks'
     | '/dashboard/todos'
     | '/api/auth/$'
     | '/api/rpc/$'
@@ -97,6 +117,8 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/account'
+    | '/dashboard/tasks'
     | '/dashboard/todos'
     | '/api/auth/$'
     | '/api/rpc/$'
@@ -106,6 +128,8 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/account'
+    | '/dashboard/tasks'
     | '/dashboard/todos'
     | '/api/auth/$'
     | '/api/rpc/$'
@@ -116,6 +140,8 @@ export interface RootRouteChildren {
   ApiSplatRoute: typeof ApiSplatRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  DashboardAccountRoute: typeof DashboardAccountRoute
+  DashboardTasksRoute: typeof DashboardTasksRoute
   DashboardTodosRoute: typeof DashboardTodosRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
@@ -135,6 +161,20 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/todos'
       fullPath: '/dashboard/todos'
       preLoaderRoute: typeof DashboardTodosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/tasks': {
+      id: '/dashboard/tasks'
+      path: '/dashboard/tasks'
+      fullPath: '/dashboard/tasks'
+      preLoaderRoute: typeof DashboardTasksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/account': {
+      id: '/dashboard/account'
+      path: '/dashboard/account'
+      fullPath: '/dashboard/account'
+      preLoaderRoute: typeof DashboardAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register': {
@@ -180,6 +220,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSplatRoute: ApiSplatRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  DashboardAccountRoute: DashboardAccountRoute,
+  DashboardTasksRoute: DashboardTasksRoute,
   DashboardTodosRoute: DashboardTodosRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
