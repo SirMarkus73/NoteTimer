@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardTodosRouteImport } from './routes/dashboard/todos'
 import { Route as DashboardTasksRouteImport } from './routes/dashboard/tasks'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
@@ -22,11 +21,6 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardTodosRoute = DashboardTodosRouteImport.update({
-  id: '/dashboard/todos',
-  path: '/dashboard/todos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardTasksRoute = DashboardTasksRouteImport.update({
@@ -72,7 +66,6 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/tasks': typeof DashboardTasksRoute
-  '/dashboard/todos': typeof DashboardTodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
 }
@@ -83,7 +76,6 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/tasks': typeof DashboardTasksRoute
-  '/dashboard/todos': typeof DashboardTodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
 }
@@ -95,7 +87,6 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/tasks': typeof DashboardTasksRoute
-  '/dashboard/todos': typeof DashboardTodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
 }
@@ -108,7 +99,6 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard/account'
     | '/dashboard/tasks'
-    | '/dashboard/todos'
     | '/api/auth/$'
     | '/api/rpc/$'
   fileRoutesByTo: FileRoutesByTo
@@ -119,7 +109,6 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard/account'
     | '/dashboard/tasks'
-    | '/dashboard/todos'
     | '/api/auth/$'
     | '/api/rpc/$'
   id:
@@ -130,7 +119,6 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard/account'
     | '/dashboard/tasks'
-    | '/dashboard/todos'
     | '/api/auth/$'
     | '/api/rpc/$'
   fileRoutesById: FileRoutesById
@@ -142,7 +130,6 @@ export interface RootRouteChildren {
   AuthRegisterRoute: typeof AuthRegisterRoute
   DashboardAccountRoute: typeof DashboardAccountRoute
   DashboardTasksRoute: typeof DashboardTasksRoute
-  DashboardTodosRoute: typeof DashboardTodosRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
 }
@@ -154,13 +141,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/todos': {
-      id: '/dashboard/todos'
-      path: '/dashboard/todos'
-      fullPath: '/dashboard/todos'
-      preLoaderRoute: typeof DashboardTodosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/tasks': {
@@ -222,7 +202,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRegisterRoute: AuthRegisterRoute,
   DashboardAccountRoute: DashboardAccountRoute,
   DashboardTasksRoute: DashboardTasksRoute,
-  DashboardTodosRoute: DashboardTodosRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
 }

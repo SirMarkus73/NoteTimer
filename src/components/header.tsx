@@ -49,11 +49,6 @@ export function Header() {
 					<NavigationMenu>
 						<NavigationMenuList>
 							<NavigationMenuItem>
-								<NavigationMenuLink render={<Link to="/dashboard/todos" />}>
-									Todos
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
 								<NavigationMenuLink render={<Link to="/dashboard/tasks" />}>
 									Tareas
 								</NavigationMenuLink>
