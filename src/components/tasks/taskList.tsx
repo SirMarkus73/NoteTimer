@@ -3,6 +3,7 @@ import {
 	Item,
 	ItemActions,
 	ItemContent,
+	ItemDescription,
 	ItemMedia,
 	ItemTitle,
 } from "#/components/ui/item";
@@ -29,6 +30,12 @@ export function TaskList() {
 					</ItemMedia>
 					<ItemContent>
 						<ItemTitle>{task.title}</ItemTitle>
+						<ItemDescription>
+							Planned Completion:{" "}
+							{task.plannedCompletion
+								? task.plannedCompletion.toLocaleDateString()
+								: "N/A"}
+						</ItemDescription>
 					</ItemContent>
 					<ItemActions>
 						<DeleteTaskBtn id={task.id} />

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/dashboard/tasks")({
 function Tasks() {
 	return (
 		<main className="min-h-screen grid place-items-center">
-			<Card>
+			<Card className="min-w-2/3">
 				<CardHeader>
 					<CardTitle>Gestión de Tareas</CardTitle>
 					<CardDescription>

@@ -19,6 +19,7 @@ export const createTask = protectedBase
 	.input(newTaskSchema)
 	.handler(async ({ input, context: ctx }) => {
 		const newTask = await db
+
 			.insert(tasks)
 			.values({
 				...input,
