@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "#/components/ui/avatar";
 import { Button } from "#/components/ui/button";
-import { authClient } from "#/lib/auth-client";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -16,13 +15,14 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "#/components/ui/dropdown-menu";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+} from "#/components/ui/navigation-menu";
+import { authClient } from "#/lib/auth-client";
 
 export function Header() {
 	const { data: session, isPending } = authClient.useSession();
