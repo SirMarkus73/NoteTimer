@@ -7,7 +7,7 @@ import {
 	LogOutIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "#/components/ui/avatar";
-import { Button } from "#/components/ui/button";
+import { Button, buttonVariants } from "#/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -79,13 +79,19 @@ export function Header() {
 							/>
 							<DropdownMenuContent align="end">
 								<DropdownMenuGroup>
-									<DropdownMenuItem render={<Link to="/dashboard/account" />}>
-										<BadgeCheckIcon />
-										Cuenta
+									<DropdownMenuItem>
+										<NavigationMenuLink
+											render={<Link to="/dashboard/account" />}
+										>
+											<BadgeCheckIcon />
+											Cuenta
+										</NavigationMenuLink>
 									</DropdownMenuItem>
 									<DropdownMenuItem>
-										<BellIcon />
-										Notificaciones
+										<NavigationMenuLink render={<Link to="/" />}>
+											<BellIcon />
+											Notificaciones
+										</NavigationMenuLink>
 									</DropdownMenuItem>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
@@ -97,20 +103,19 @@ export function Header() {
 						</DropdownMenu>
 					) : (
 						<div className="flex items-center gap-2">
-							<Button
-								render={<Link to="/auth/login" />}
-								size="sm"
-								variant="outline"
+							<Link
+								to="/auth/login"
+								className={buttonVariants({ size: "sm", variant: "outline" })}
 							>
 								Iniciar sesión
-							</Button>
-							<Button
-								render={<Link to="/auth/register" />}
-								size="sm"
-								variant="outline"
+							</Link>
+
+							<Link
+								to="/auth/register"
+								className={buttonVariants({ size: "sm", variant: "outline" })}
 							>
 								Registrarse
-							</Button>
+							</Link>
 						</div>
 					)}
 				</div>

@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Button } from "#/components/ui/button";
+import { Button, buttonVariants } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -142,13 +142,12 @@ export function LoginCard({ className }: Props) {
 				</form>
 			</CardContent>
 			<CardFooter className="justify-end">
-				<Button
-					variant="link"
-					role="link"
-					render={<Link to="/auth/register" />}
+				<Link
+					to="/auth/register"
+					className={buttonVariants({ variant: "link" })}
 				>
 					¿No tienes una cuenta? Regístrate
-				</Button>
+				</Link>
 				<form.Subscribe selector={(state) => state.isSubmitting}>
 					{(isSubmitting) => (
 						<Button type="submit" form="login-form" disabled={isSubmitting}>

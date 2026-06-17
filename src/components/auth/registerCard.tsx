@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "#/components/ui/button";
+import { Button, buttonVariants } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -67,9 +67,10 @@ export function RegisterCard({ className }: Props) {
 				</form>
 			</CardContent>
 			<CardFooter className="justify-end">
-				<Button variant="link" role="link" render={<Link to="/auth/login" />}>
+				<Link to="/auth/login" className={buttonVariants({ variant: "link" })}>
 					¿Ya tienes una cuenta? Inicia sesión
-				</Button>
+				</Link>
+
 				<Button type="submit" form="register-form">
 					Registrarse
 				</Button>
