@@ -9,6 +9,7 @@ import type z from "zod";
 import { today } from "#/lib/utils";
 import { user } from "./auth";
 
+// Table
 export const taskStatusEnum = pgEnum("task_status", [
 	"pending",
 	"in_progress",
@@ -31,6 +32,7 @@ export const tasks = pgTable("task", {
 		.notNull(),
 });
 
+// Relations
 export const taskRelations = relations(tasks, ({ one }) => ({
 	owner: one(user, {
 		fields: [tasks.ownerId],
@@ -38,6 +40,7 @@ export const taskRelations = relations(tasks, ({ one }) => ({
 	}),
 }));
 
+// Schemas
 export const taskSchema = createSelectSchema(tasks);
 export const newTaskSchema = createInsertSchema(tasks, {
 	title: (s) => s.min(5, "El titulo debe tener al menos 5 caracteres"),

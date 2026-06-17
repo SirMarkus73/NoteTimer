@@ -53,6 +53,11 @@ export function Header() {
 									Tareas
 								</NavigationMenuLink>
 							</NavigationMenuItem>
+							<NavigationMenuItem>
+								<NavigationMenuLink render={<Link to="/dashboard/projects" />}>
+									Proyectos
+								</NavigationMenuLink>
+							</NavigationMenuItem>
 						</NavigationMenuList>
 					</NavigationMenu>
 				</div>
@@ -79,19 +84,13 @@ export function Header() {
 							/>
 							<DropdownMenuContent align="end">
 								<DropdownMenuGroup>
-									<DropdownMenuItem>
-										<NavigationMenuLink
-											render={<Link to="/dashboard/account" />}
-										>
-											<BadgeCheckIcon />
-											Cuenta
-										</NavigationMenuLink>
+									<DropdownMenuItem render={<Link to="/dashboard/account" />}>
+										<BadgeCheckIcon />
+										Cuenta
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<NavigationMenuLink render={<Link to="/" />}>
-											<BellIcon />
-											Notificaciones
-										</NavigationMenuLink>
+									<DropdownMenuItem render={<Link to="/" />}>
+										<BellIcon />
+										Notificaciones
 									</DropdownMenuItem>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />

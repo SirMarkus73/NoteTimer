@@ -15,6 +15,8 @@ import { Route as DashboardAccountRouteImport } from './routes/dashboard/account
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
+import { Route as DashboardProjectsIndexRouteImport } from './routes/dashboard/projects/index'
+import { Route as DashboardProjectsProjectSlugRouteImport } from './routes/dashboard/projects/$projectSlug'
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
@@ -48,6 +50,17 @@ const ApiSplatRoute = ApiSplatRouteImport.update({
   path: '/api/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardProjectsIndexRoute = DashboardProjectsIndexRouteImport.update({
+  id: '/dashboard/projects/',
+  path: '/dashboard/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardProjectsProjectSlugRoute =
+  DashboardProjectsProjectSlugRouteImport.update({
+    id: '/$projectSlug',
+    path: '/$projectSlug',
+    getParentRoute: () => DashboardProjectsRoute,
+  } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
@@ -68,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/dashboard/projects/$projectSlug': typeof DashboardProjectsProjectSlugRoute
+  '/dashboard/projects/': typeof DashboardProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +93,8 @@ export interface FileRoutesByTo {
   '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/dashboard/projects/$projectSlug': typeof DashboardProjectsProjectSlugRoute
+  '/dashboard/projects': typeof DashboardProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +106,8 @@ export interface FileRoutesById {
   '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/dashboard/projects/$projectSlug': typeof DashboardProjectsProjectSlugRoute
+  '/dashboard/projects/': typeof DashboardProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +120,8 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/dashboard/projects/$projectSlug'
+    | '/dashboard/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +132,8 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/dashboard/projects/$projectSlug'
+    | '/dashboard/projects'
   id:
     | '__root__'
     | '/'
@@ -121,6 +144,8 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/dashboard/projects/$projectSlug'
+    | '/dashboard/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +157,7 @@ export interface RootRouteChildren {
   DashboardTasksRoute: typeof DashboardTasksRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
+  DashboardProjectsIndexRoute: typeof DashboardProjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -178,6 +204,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/projects/': {
+      id: '/dashboard/projects/'
+      path: '/dashboard/projects'
+      fullPath: '/dashboard/projects/'
+      preLoaderRoute: typeof DashboardProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/projects/$projectSlug': {
+      id: '/dashboard/projects/$projectSlug'
+      path: '/$projectSlug'
+      fullPath: '/dashboard/projects/$projectSlug'
+      preLoaderRoute: typeof DashboardProjectsProjectSlugRouteImport
+      parentRoute: typeof DashboardProjectsRoute
+    }
     '/api/rpc/$': {
       id: '/api/rpc/$'
       path: '/api/rpc/$'
@@ -204,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardTasksRoute: DashboardTasksRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
+  DashboardProjectsIndexRoute: DashboardProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
