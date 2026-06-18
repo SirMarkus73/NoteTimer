@@ -41,7 +41,7 @@ const defaultValues: z.infer<typeof formSchema> = {
 	slug: "",
 };
 
-export function CreateProjectBtn({ className }: Props) {
+export function CreateWorkspaceBtn({ className }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const form = useForm({
 		defaultValues,

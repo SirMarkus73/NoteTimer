@@ -1,35 +1,35 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { authClient } from "#/lib/auth-client";
 
-export const Route = createFileRoute("/dashboard/projects/$projectSlug")({
+export const Route = createFileRoute("/dashboard/workspaces/$workspaceSlug")({
 	component: RouteComponent,
 	loader: async ({ params }) => {
-		const { projectSlug } = params;
-		const { data: project, error } =
+		const { workspaceSlug } = params;
+		const { data: workspace, error } =
 			await authClient.organization.getFullOrganization({
 				query: {
-					organizationSlug: projectSlug,
+					organizationSlug: workspaceSlug,
 				},
 			});
 
 		if (error) {
 			throw redirect({
-				to: "/dashboard/projects",
+				to: "/dashboard/workspaces",
 			});
 		}
 
 		return {
-			project,
+			workspace,
 		};
 	},
 });
 
 function RouteComponent() {
-	const { project } = Route.useLoaderData();
+	const { workspace } = Route.useLoaderData();
 
 	return (
 		<div>
-			{project.name} - {project.slug}
+			{workspace.name} - {workspace.slug}
 		</div>
 	);
 }

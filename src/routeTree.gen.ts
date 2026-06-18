@@ -15,8 +15,8 @@ import { Route as DashboardAccountRouteImport } from './routes/dashboard/account
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
-import { Route as DashboardProjectsIndexRouteImport } from './routes/dashboard/projects/index'
-import { Route as DashboardProjectsProjectSlugRouteImport } from './routes/dashboard/projects/$projectSlug'
+import { Route as DashboardWorkspacesIndexRouteImport } from './routes/dashboard/workspaces/index'
+import { Route as DashboardWorkspacesWorkspaceSlugRouteImport } from './routes/dashboard/workspaces/$workspaceSlug'
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
@@ -50,16 +50,17 @@ const ApiSplatRoute = ApiSplatRouteImport.update({
   path: '/api/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardProjectsIndexRoute = DashboardProjectsIndexRouteImport.update({
-  id: '/dashboard/projects/',
-  path: '/dashboard/projects/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardProjectsProjectSlugRoute =
-  DashboardProjectsProjectSlugRouteImport.update({
-    id: '/$projectSlug',
-    path: '/$projectSlug',
-    getParentRoute: () => DashboardProjectsRoute,
+const DashboardWorkspacesIndexRoute =
+  DashboardWorkspacesIndexRouteImport.update({
+    id: '/dashboard/workspaces/',
+    path: '/dashboard/workspaces/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardWorkspacesWorkspaceSlugRoute =
+  DashboardWorkspacesWorkspaceSlugRouteImport.update({
+    id: '/dashboard/workspaces/$workspaceSlug',
+    path: '/dashboard/workspaces/$workspaceSlug',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
@@ -81,8 +82,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/dashboard/projects/$projectSlug': typeof DashboardProjectsProjectSlugRoute
-  '/dashboard/projects/': typeof DashboardProjectsIndexRoute
+  '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
+  '/dashboard/workspaces/': typeof DashboardWorkspacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,8 +94,8 @@ export interface FileRoutesByTo {
   '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/dashboard/projects/$projectSlug': typeof DashboardProjectsProjectSlugRoute
-  '/dashboard/projects': typeof DashboardProjectsIndexRoute
+  '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
+  '/dashboard/workspaces': typeof DashboardWorkspacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,8 +107,8 @@ export interface FileRoutesById {
   '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/dashboard/projects/$projectSlug': typeof DashboardProjectsProjectSlugRoute
-  '/dashboard/projects/': typeof DashboardProjectsIndexRoute
+  '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
+  '/dashboard/workspaces/': typeof DashboardWorkspacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,8 +121,8 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
-    | '/dashboard/projects/$projectSlug'
-    | '/dashboard/projects/'
+    | '/dashboard/workspaces/$workspaceSlug'
+    | '/dashboard/workspaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -132,8 +133,8 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
-    | '/dashboard/projects/$projectSlug'
-    | '/dashboard/projects'
+    | '/dashboard/workspaces/$workspaceSlug'
+    | '/dashboard/workspaces'
   id:
     | '__root__'
     | '/'
@@ -144,8 +145,8 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
-    | '/dashboard/projects/$projectSlug'
-    | '/dashboard/projects/'
+    | '/dashboard/workspaces/$workspaceSlug'
+    | '/dashboard/workspaces/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -157,7 +158,8 @@ export interface RootRouteChildren {
   DashboardTasksRoute: typeof DashboardTasksRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
-  DashboardProjectsIndexRoute: typeof DashboardProjectsIndexRoute
+  DashboardWorkspacesWorkspaceSlugRoute: typeof DashboardWorkspacesWorkspaceSlugRoute
+  DashboardWorkspacesIndexRoute: typeof DashboardWorkspacesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -204,19 +206,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/projects/': {
-      id: '/dashboard/projects/'
-      path: '/dashboard/projects'
-      fullPath: '/dashboard/projects/'
-      preLoaderRoute: typeof DashboardProjectsIndexRouteImport
+    '/dashboard/workspaces/': {
+      id: '/dashboard/workspaces/'
+      path: '/dashboard/workspaces'
+      fullPath: '/dashboard/workspaces/'
+      preLoaderRoute: typeof DashboardWorkspacesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/projects/$projectSlug': {
-      id: '/dashboard/projects/$projectSlug'
-      path: '/$projectSlug'
-      fullPath: '/dashboard/projects/$projectSlug'
-      preLoaderRoute: typeof DashboardProjectsProjectSlugRouteImport
-      parentRoute: typeof DashboardProjectsRoute
+    '/dashboard/workspaces/$workspaceSlug': {
+      id: '/dashboard/workspaces/$workspaceSlug'
+      path: '/dashboard/workspaces/$workspaceSlug'
+      fullPath: '/dashboard/workspaces/$workspaceSlug'
+      preLoaderRoute: typeof DashboardWorkspacesWorkspaceSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/rpc/$': {
       id: '/api/rpc/$'
@@ -244,7 +246,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardTasksRoute: DashboardTasksRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
-  DashboardProjectsIndexRoute: DashboardProjectsIndexRoute,
+  DashboardWorkspacesWorkspaceSlugRoute: DashboardWorkspacesWorkspaceSlugRoute,
+  DashboardWorkspacesIndexRoute: DashboardWorkspacesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

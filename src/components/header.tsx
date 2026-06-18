@@ -6,6 +6,7 @@ import {
 	Clock3,
 	LogOutIcon,
 } from "lucide-react";
+import type { ReactElement } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "#/components/ui/avatar";
 import { Button, buttonVariants } from "#/components/ui/button";
 import {
@@ -23,6 +24,22 @@ import {
 	NavigationMenuList,
 } from "#/components/ui/navigation-menu";
 import { authClient } from "#/lib/auth-client";
+
+type Route = {
+	link: ReactElement;
+	label: string;
+};
+
+const routes: Route[] = [
+	{
+		label: "Tareas",
+		link: <Link to="/dashboard/tasks" />,
+	},
+	{
+		label: "Espacios de Trabajo",
+		link: <Link to="/dashboard/workspaces" />,
+	},
+];
 
 export function Header() {
 	const { data: session, isPending } = authClient.useSession();
@@ -48,16 +65,13 @@ export function Header() {
 				<div className="justify-self-center">
 					<NavigationMenu>
 						<NavigationMenuList>
-							<NavigationMenuItem>
-								<NavigationMenuLink render={<Link to="/dashboard/tasks" />}>
-									Tareas
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<NavigationMenuLink render={<Link to="/dashboard/projects" />}>
-									Proyectos
-								</NavigationMenuLink>
-							</NavigationMenuItem>
+							{routes.map((route) => (
+								<NavigationMenuItem key={route.label}>
+									<NavigationMenuLink render={route.link}>
+										{route.label}
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							))}
 						</NavigationMenuList>
 					</NavigationMenu>
 				</div>
