@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { AppSidebar } from "#/components/appSidebar";
-import { Header } from "#/components/header";
+import { AppHeader } from "#/components/app/appHeader";
+import { AppSidebar } from "#/components/app/appSidebar";
 import { SidebarProvider } from "#/components/ui/sidebar";
 
 export const Route = createFileRoute("/dashboard")({
@@ -12,7 +12,7 @@ function RouteComponent() {
 		<SidebarProvider>
 			<AppSidebar />
 			<main className="flex-1">
-				<Header />
+				<AppHeader />
 				<div className="mx-5 mt-5">
 					<Outlet />
 				</div>

@@ -2,12 +2,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
 	ArrowRight,
 	CheckCircle2,
-	Clock3Icon,
 	NotebookPen,
 	Sparkles,
 	TimerReset,
 } from "lucide-react";
-import { UserDropdown } from "#/components/header";
+import { LandingHeader } from "#/components/landing/landingHeader";
 import { Button } from "#/components/ui/button";
 import {
 	Card,
@@ -50,15 +49,7 @@ function Home() {
 
 	return (
 		<>
-			<header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-				<div className="mx-auto grid h-16 w-full grid-cols-[auto_auto] items-center gap-6 px-6">
-					<span className="flex flex-row items-center gap-3">
-						<Clock3Icon className="size-5" />
-						NoteTimer
-					</span>
-					<UserDropdown />
-				</div>
-			</header>
+			<LandingHeader />
 			<main className={shellClassName}>
 				<section
 					className={`${contentClassName} grid gap-6 pt-4 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pt-16`}

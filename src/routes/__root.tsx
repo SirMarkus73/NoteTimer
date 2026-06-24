@@ -8,7 +8,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { ThemeProvider } from "#/components/themeProvider";
+import { ThemeProvider } from "#/components/app/themeProvider";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {

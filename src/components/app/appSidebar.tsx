@@ -1,6 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Clock3Icon } from "lucide-react";
 import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "#/components/ui/collapsible";
+import { FieldError } from "#/components/ui/field";
+import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
@@ -12,14 +18,8 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "#/components/ui/sidebar";
+import { Spinner } from "#/components/ui/spinner";
 import { authClient } from "#/lib/auth-client";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "./ui/collapsible";
-import { FieldError } from "./ui/field";
-import { Spinner } from "./ui/spinner";
 
 export function AppSidebar() {
 	const { data, isPending, error } = authClient.useListOrganizations();
