@@ -11,14 +11,18 @@ import { useTasks } from "#/lib/tasks/useTasks";
 import { DeleteTaskBtn } from "./DeleteTaskBtn";
 
 export function TaskList() {
-	const { data: tasks, isLoading, isError } = useTasks({});
+	const { data: tasks, isLoading, isError, error } = useTasks({});
 
 	if (isLoading) {
 		return <div className="p-8">Loading...</div>;
 	}
 
 	if (isError) {
-		return <div className="p-8 text-red-500">Error loading tasks.</div>;
+		return (
+			<div className="p-8 text-red-500">
+				Error loading tasks. {error.message}
+			</div>
+		);
 	}
 
 	return (

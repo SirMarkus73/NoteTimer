@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth";
 import { organization } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { db } from "#/db";
+import { ac, admin, editor, owner, viewer } from "#/lib/auth/permissions";
 
 export const auth = betterAuth({
 	emailAndPassword: {
@@ -11,5 +12,16 @@ export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: "pg", // or "pg" or "mysql"
 	}),
-	plugins: [tanstackStartCookies(), organization()],
+	plugins: [
+		tanstackStartCookies(),
+		organization({
+			ac,
+			roles: {
+				viewer,
+				editor,
+				admin,
+				owner,
+			},
+		}),
+	],
 });

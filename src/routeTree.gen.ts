@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardTasksRouteImport } from './routes/dashboard/tasks'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
@@ -23,11 +22,6 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardTasksRoute = DashboardTasksRouteImport.update({
-  id: '/dashboard/tasks',
-  path: '/dashboard/tasks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardAccountRoute = DashboardAccountRouteImport.update({
@@ -79,7 +73,6 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
@@ -91,7 +84,6 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
@@ -104,7 +96,6 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/tasks': typeof DashboardTasksRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
@@ -118,7 +109,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/account'
-    | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/workspaces/$workspaceSlug'
@@ -130,7 +120,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/account'
-    | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/workspaces/$workspaceSlug'
@@ -142,7 +131,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/account'
-    | '/dashboard/tasks'
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/workspaces/$workspaceSlug'
@@ -155,7 +143,6 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   DashboardAccountRoute: typeof DashboardAccountRoute
-  DashboardTasksRoute: typeof DashboardTasksRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
   DashboardWorkspacesWorkspaceSlugRoute: typeof DashboardWorkspacesWorkspaceSlugRoute
@@ -169,13 +156,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/tasks': {
-      id: '/dashboard/tasks'
-      path: '/dashboard/tasks'
-      fullPath: '/dashboard/tasks'
-      preLoaderRoute: typeof DashboardTasksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/account': {
@@ -243,7 +223,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   DashboardAccountRoute: DashboardAccountRoute,
-  DashboardTasksRoute: DashboardTasksRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
   DashboardWorkspacesWorkspaceSlugRoute: DashboardWorkspacesWorkspaceSlugRoute,

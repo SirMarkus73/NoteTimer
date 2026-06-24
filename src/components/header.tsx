@@ -32,10 +32,6 @@ type Route = {
 
 const routes: Route[] = [
 	{
-		label: "Tareas",
-		link: <Link to="/dashboard/tasks" />,
-	},
-	{
 		label: "Espacios de Trabajo",
 		link: <Link to="/dashboard/workspaces" />,
 	},

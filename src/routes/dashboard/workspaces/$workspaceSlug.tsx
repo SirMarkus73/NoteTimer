@@ -1,10 +1,23 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { CreateTaskForm } from "#/components/tasks/createTaskForm";
+import { TaskList } from "#/components/tasks/taskList";
 import { authClient } from "#/lib/auth-client";
 
 export const Route = createFileRoute("/dashboard/workspaces/$workspaceSlug")({
 	component: RouteComponent,
 	loader: async ({ params }) => {
 		const { workspaceSlug } = params;
+
+		const response = await authClient.organization.setActive({
+			organizationSlug: workspaceSlug,
+		});
+
+		if (response.error) {
+			throw redirect({
+				to: "/dashboard/workspaces",
+			});
+		}
+
 		const { data: workspace, error } =
 			await authClient.organization.getFullOrganization({
 				query: {
@@ -30,6 +43,8 @@ function RouteComponent() {
 	return (
 		<div>
 			{workspace.name} - {workspace.slug}
+			<TaskList />
+			<CreateTaskForm />
 		</div>
 	);
 }

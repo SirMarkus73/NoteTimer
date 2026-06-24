@@ -7,7 +7,7 @@ import {
 } from "drizzle-zod";
 import type z from "zod";
 import { today } from "#/lib/utils";
-import { user } from "./auth";
+import { organization } from "./auth";
 
 // Table
 export const taskStatusEnum = pgEnum("task_status", [
@@ -18,9 +18,12 @@ export const taskStatusEnum = pgEnum("task_status", [
 
 export const tasks = pgTable("task", {
 	id: serial().primaryKey(),
-	ownerId: text()
+	organizationId: text()
 		.notNull()
-		.references(() => user.id, { onDelete: "cascade" }),
+		.references(() => organization.id, {
+			onDelete: "cascade",
+			onUpdate: "cascade",
+		}),
 	title: text().notNull(),
 	status: taskStatusEnum().default("pending").notNull(),
 
@@ -34,9 +37,9 @@ export const tasks = pgTable("task", {
 
 // Relations
 export const taskRelations = relations(tasks, ({ one }) => ({
-	owner: one(user, {
-		fields: [tasks.ownerId],
-		references: [user.id],
+	organization: one(organization, {
+		fields: [tasks.organizationId],
+		references: [organization.id],
 	}),
 }));
 
@@ -54,13 +57,13 @@ export const newTaskSchema = createInsertSchema(tasks, {
 	id: true,
 	createdAt: true,
 	updatedAt: true,
-	ownerId: true,
+	organizationId: true,
 });
 
 export const updateTaskSchema = createUpdateSchema(tasks)
 	.omit({
 		createdAt: true,
-		ownerId: true,
+		organizationId: true,
 		updatedAt: true,
 	})
 	.required({
