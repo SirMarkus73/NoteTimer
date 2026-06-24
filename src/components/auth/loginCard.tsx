@@ -1,6 +1,6 @@
-import { useForm } from "@tanstack/react-form";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Button, buttonVariants } from "#/components/ui/button";
+import z from "zod";
+import { buttonVariants } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -8,25 +8,25 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import {
-	Field,
-	FieldDescription,
-	FieldError,
-	FieldGroup,
-	FieldLabel,
-	FieldSet,
-} from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
+import { FieldDescription, FieldGroup, FieldSet } from "#/components/ui/field";
 import { authClient } from "#/lib/auth-client";
+import { useAppForm } from "#/lib/forms/useAppForm";
 
 type Props = {
 	className?: string;
 };
 
+const formSchema = z.object({
+	email: z
+		.email("Correo electrónico inválido")
+		.min(1, "Correo electrónico es requerido"),
+	password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+});
+
 export function LoginCard({ className }: Props) {
 	const navigate = useNavigate();
 
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues: {
 			email: "",
 			password: "",
@@ -71,6 +71,9 @@ export function LoginCard({ className }: Props) {
 				}
 			}
 		},
+		validators: {
+			onChange: formSchema,
+		},
 	});
 
 	return (
@@ -91,52 +94,27 @@ export function LoginCard({ className }: Props) {
 				>
 					<FieldSet>
 						<FieldGroup>
-							<Field>
-								<FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
+							<form.AppField name="email">
+								{(field) => (
+									<field.InputField
+										label="Correo electrónico"
+										type="email"
+										autoComplete="email"
+										placeholder="evil.rabbit@example.com"
+									/>
+								)}
+							</form.AppField>
 
-								<form.Field name="email">
-									{(field) => (
-										<>
-											<Input
-												id={field.name}
-												name={field.name}
-												value={field.state.value}
-												onBlur={field.handleBlur}
-												onChange={(e) => field.handleChange(e.target.value)}
-												type="email"
-												autoComplete="off"
-												placeholder="evil.rabbit@example.com"
-											/>
-											{field.state.meta.errors.length > 0 && (
-												<FieldError>{field.state.meta.errors[0]}</FieldError>
-											)}
-										</>
-									)}
-								</form.Field>
-							</Field>
-							<Field>
-								<FieldLabel htmlFor="password">Contraseña</FieldLabel>
-								<form.Field name="password">
-									{(field) => (
-										<>
-											{" "}
-											<Input
-												id={field.name}
-												type="password"
-												autoComplete="off"
-												placeholder="••••••••"
-												name={field.name}
-												value={field.state.value}
-												onBlur={field.handleBlur}
-												onChange={(e) => field.handleChange(e.target.value)}
-											/>
-											{field.state.meta.errors.length > 0 && (
-												<FieldError>{field.state.meta.errors[0]}</FieldError>
-											)}
-										</>
-									)}
-								</form.Field>
-							</Field>
+							<form.AppField name="password">
+								{(field) => (
+									<field.InputField
+										label="Contraseña"
+										type="password"
+										autoComplete="current-password"
+										placeholder="Your password"
+									/>
+								)}
+							</form.AppField>
 						</FieldGroup>
 					</FieldSet>
 				</form>
@@ -148,13 +126,10 @@ export function LoginCard({ className }: Props) {
 				>
 					¿No tienes una cuenta? Regístrate
 				</Link>
-				<form.Subscribe selector={(state) => state.isSubmitting}>
-					{(isSubmitting) => (
-						<Button type="submit" form="login-form" disabled={isSubmitting}>
-							{isSubmitting ? "Iniciando sesión..." : "Iniciar sesión"}
-						</Button>
-					)}
-				</form.Subscribe>
+
+				<form.AppForm>
+					<form.SubmitButton label="Iniciar sesión" />
+				</form.AppForm>
 			</CardFooter>
 		</Card>
 	);
