@@ -9,25 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
-import { Route as DashboardWorkspacesIndexRouteImport } from './routes/dashboard/workspaces/index'
-import { Route as DashboardWorkspacesWorkspaceSlugRouteImport } from './routes/dashboard/workspaces/$workspaceSlug'
+import { Route as DashboardWorkspacesWorkspaceSlugRouteImport } from './routes/dashboard/workspaces.$workspaceSlug'
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardAccountRoute = DashboardAccountRouteImport.update({
-  id: '/dashboard/account',
-  path: '/dashboard/account',
-  getParentRoute: () => rootRouteImport,
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/auth/register',
@@ -44,17 +55,11 @@ const ApiSplatRoute = ApiSplatRouteImport.update({
   path: '/api/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardWorkspacesIndexRoute =
-  DashboardWorkspacesIndexRouteImport.update({
-    id: '/dashboard/workspaces/',
-    path: '/dashboard/workspaces/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const DashboardWorkspacesWorkspaceSlugRoute =
   DashboardWorkspacesWorkspaceSlugRouteImport.update({
-    id: '/dashboard/workspaces/$workspaceSlug',
-    path: '/dashboard/workspaces/$workspaceSlug',
-    getParentRoute: () => rootRouteImport,
+    id: '/workspaces/$workspaceSlug',
+    path: '/workspaces/$workspaceSlug',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
@@ -69,14 +74,15 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/api/$': typeof ApiSplatRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
-  '/dashboard/workspaces/': typeof DashboardWorkspacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,35 +90,37 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
-  '/dashboard/workspaces': typeof DashboardWorkspacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/api/$': typeof ApiSplatRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/workspaces/$workspaceSlug': typeof DashboardWorkspacesWorkspaceSlugRoute
-  '/dashboard/workspaces/': typeof DashboardWorkspacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/api/$'
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/account'
+    | '/dashboard/'
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/workspaces/$workspaceSlug'
-    | '/dashboard/workspaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,37 +128,43 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/account'
+    | '/dashboard'
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/workspaces/$workspaceSlug'
-    | '/dashboard/workspaces'
   id:
     | '__root__'
     | '/'
+    | '/dashboard'
     | '/api/$'
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/account'
+    | '/dashboard/'
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/workspaces/$workspaceSlug'
-    | '/dashboard/workspaces/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   ApiSplatRoute: typeof ApiSplatRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
-  DashboardAccountRoute: typeof DashboardAccountRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
-  DashboardWorkspacesWorkspaceSlugRoute: typeof DashboardWorkspacesWorkspaceSlugRoute
-  DashboardWorkspacesIndexRoute: typeof DashboardWorkspacesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -158,12 +172,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/account': {
       id: '/dashboard/account'
-      path: '/dashboard/account'
+      path: '/account'
       fullPath: '/dashboard/account'
       preLoaderRoute: typeof DashboardAccountRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/auth/register': {
       id: '/auth/register'
@@ -186,19 +207,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/workspaces/': {
-      id: '/dashboard/workspaces/'
-      path: '/dashboard/workspaces'
-      fullPath: '/dashboard/workspaces/'
-      preLoaderRoute: typeof DashboardWorkspacesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dashboard/workspaces/$workspaceSlug': {
       id: '/dashboard/workspaces/$workspaceSlug'
-      path: '/dashboard/workspaces/$workspaceSlug'
+      path: '/workspaces/$workspaceSlug'
       fullPath: '/dashboard/workspaces/$workspaceSlug'
       preLoaderRoute: typeof DashboardWorkspacesWorkspaceSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/api/rpc/$': {
       id: '/api/rpc/$'
@@ -217,16 +231,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DashboardRouteRouteChildren {
+  DashboardAccountRoute: typeof DashboardAccountRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardWorkspacesWorkspaceSlugRoute: typeof DashboardWorkspacesWorkspaceSlugRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAccountRoute: DashboardAccountRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardWorkspacesWorkspaceSlugRoute: DashboardWorkspacesWorkspaceSlugRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   ApiSplatRoute: ApiSplatRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
-  DashboardAccountRoute: DashboardAccountRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
-  DashboardWorkspacesWorkspaceSlugRoute: DashboardWorkspacesWorkspaceSlugRoute,
-  DashboardWorkspacesIndexRoute: DashboardWorkspacesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

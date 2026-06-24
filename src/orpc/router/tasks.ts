@@ -53,12 +53,10 @@ export const listTasks = authenticatedBase
 		tags: ["tasks"],
 	})
 	.input(
-		z
-			.object({
-				cursor: z.number().optional(),
-				limit: z.number().optional(),
-			})
-			.optional(),
+		z.object({
+			cursor: z.number().optional(),
+			limit: z.number().optional(),
+		}),
 	)
 	.handler(async ({ context: ctx, errors, input }) => {
 		const { session, headers } = ctx;
