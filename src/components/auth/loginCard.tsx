@@ -86,7 +86,7 @@ export function LoginCard({ className }: Props) {
 			</CardHeader>
 			<CardContent>
 				<form
-					id="login-form"
+					id={form.formId}
 					onSubmit={(e) => {
 						e.preventDefault();
 						form.handleSubmit(e);

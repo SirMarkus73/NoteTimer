@@ -8,13 +8,22 @@ type Props = {
 
 export function SubmitButton({ label }: Props) {
 	const form = useFormContext();
-	console.log("MIRALOOOOOOOOO", form);
 
 	return (
-		<form.Subscribe selector={(state) => state.isSubmitting}>
-			{(isSubmitting) => (
-				<Button type="submit" form="login-form" disabled={isSubmitting}>
-					{isSubmitting && <Spinner />}
+		<form.Subscribe
+			selector={(state) => ({
+				isSubmitting: state.isSubmitting,
+				isValid: state.isValid,
+				isValidating: state.isValidating,
+			})}
+		>
+			{({ isSubmitting, isValid, isValidating }) => (
+				<Button
+					type="submit"
+					form={form.formId}
+					disabled={isSubmitting || !isValid || isValidating}
+				>
+					{(isSubmitting || isValidating) && <Spinner />}
 					{label}
 				</Button>
 			)}

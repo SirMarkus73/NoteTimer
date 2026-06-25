@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
 import z from "zod";
-import { Button, buttonVariants } from "#/components/ui/button";
+import { buttonVariants } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -92,7 +92,7 @@ export function RegisterCard({ className }: Props) {
 				</FieldDescription>
 			</CardHeader>
 			<CardContent>
-				<form id="register-form" onSubmit={onSubmit}>
+				<form id={form.formId} onSubmit={onSubmit}>
 					<FieldSet>
 						<FieldGroup>
 							{
@@ -174,9 +174,9 @@ export function RegisterCard({ className }: Props) {
 						¿Ya tienes una cuenta? Inicia sesión
 					</Link>
 
-					<Button type="submit" form="register-form">
-						Registrarse
-					</Button>
+					<form.AppForm>
+						<form.SubmitButton label="Registrarse" />
+					</form.AppForm>
 				</div>
 			</CardFooter>
 		</Card>
