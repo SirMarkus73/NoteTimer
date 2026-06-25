@@ -1,4 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import type { SubmitEvent } from "react";
+import z from "zod";
 import { Button, buttonVariants } from "#/components/ui/button";
 import {
 	Card,
@@ -8,19 +10,68 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import {
-	Field,
 	FieldDescription,
+	FieldError,
 	FieldGroup,
-	FieldLabel,
 	FieldSet,
 } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
+import { authClient } from "#/lib/auth-client";
+import { useAppForm } from "#/lib/forms/useAppForm";
 
 type Props = {
 	className?: string;
 };
 
+const formSchema = z.object({
+	name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+	email: z
+		.email("Correo electrónico inválido")
+		.min(1, "Correo electrónico es requerido"),
+	password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+	repeatPassword: z
+		.string()
+		.min(6, "La contraseña debe tener al menos 6 caracteres"),
+});
+
 export function RegisterCard({ className }: Props) {
+	const navigate = useNavigate();
+
+	const form = useAppForm({
+		defaultValues: {
+			name: "",
+			email: "",
+			password: "",
+			repeatPassword: "",
+		},
+		async onSubmit({ value, formApi }) {
+			const { error } = await authClient.signUp.email({
+				name: value.name,
+				email: value.email,
+				password: value.password,
+			});
+
+			if (error) {
+				console.error("Error al registrarse:", error);
+				formApi.setErrorMap({
+					onSubmit: {
+						fields: {},
+						form: "Error al registrarse. Por favor, inténtalo de nuevo mas tarde.",
+					},
+				});
+			}
+
+			navigate({ to: "/dashboard" });
+		},
+		validators: {
+			onChange: formSchema,
+		},
+	});
+
+	const onSubmit = (e: SubmitEvent) => {
+		e.preventDefault();
+		form.handleSubmit();
+	};
+
 	return (
 		<Card className={className}>
 			<CardHeader>
@@ -30,50 +81,98 @@ export function RegisterCard({ className }: Props) {
 				</FieldDescription>
 			</CardHeader>
 			<CardContent>
-				<form id="register-form">
+				<form id="register-form" onSubmit={onSubmit}>
 					<FieldSet>
 						<FieldGroup>
-							<Field>
-								<FieldLabel htmlFor="name">Nombre completo</FieldLabel>
-								<Input
-									id="name"
-									type="text"
-									autoComplete="off"
-									placeholder="Evil Rabbit"
-								/>
-							</Field>
+							{
+								<form.AppField name="name">
+									{(field) => (
+										<field.InputField
+											label="Nombre completo"
+											type="text"
+											autoComplete="name"
+											placeholder="Evil Rabbit"
+										/>
+									)}
+								</form.AppField>
+							}
 
-							<Field>
-								<FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
-								<Input
-									id="email"
-									type="email"
-									autoComplete="off"
-									placeholder="evil.rabbit@example.com"
-								/>
-							</Field>
+							{
+								<form.AppField name="email">
+									{(field) => (
+										<field.InputField
+											label="Correo electrónico"
+											type="email"
+											autoComplete="email"
+											placeholder="evil.rabbit@example.com"
+										/>
+									)}
+								</form.AppField>
+							}
 
-							<Field>
-								<FieldLabel htmlFor="password">Contraseña</FieldLabel>
-								<Input
-									id="password"
-									type="password"
-									autoComplete="off"
-									placeholder="••••••••"
-								/>
-							</Field>
+							{
+								<form.AppField name="password">
+									{(field) => (
+										<field.InputField
+											label="Contraseña"
+											type="password"
+											autoComplete="new-password"
+											placeholder="••••••••"
+										/>
+									)}
+								</form.AppField>
+							}
+
+							{
+								<form.AppField
+									name="repeatPassword"
+									validators={{
+										onChange: ({ value, fieldApi }) => {
+											const password = fieldApi.form.getFieldValue("password");
+
+											if (value !== password) {
+												return "Las contraseñas no coinciden";
+											}
+										},
+									}}
+								>
+									{(field) => (
+										<field.InputField
+											label="Repetir contraseña"
+											type="password"
+											autoComplete="new-password"
+											placeholder="••••••••"
+										/>
+									)}
+								</form.AppField>
+							}
 						</FieldGroup>
 					</FieldSet>
 				</form>
 			</CardContent>
-			<CardFooter className="justify-end">
-				<Link to="/auth/login" className={buttonVariants({ variant: "link" })}>
-					¿Ya tienes una cuenta? Inicia sesión
-				</Link>
+			<CardFooter className="flex">
+				<form.Subscribe selector={(state) => state.errors?.[0]}>
+					{(state) =>
+						state && (
+							<FieldError>
+								{(typeof state === "string" && state) || "Error desconocido"}
+							</FieldError>
+						)
+					}
+				</form.Subscribe>
 
-				<Button type="submit" form="register-form">
-					Registrarse
-				</Button>
+				<div className="ml-auto">
+					<Link
+						to="/auth/login"
+						className={buttonVariants({ variant: "link" })}
+					>
+						¿Ya tienes una cuenta? Inicia sesión
+					</Link>
+
+					<Button type="submit" form="register-form">
+						Registrarse
+					</Button>
+				</div>
 			</CardFooter>
 		</Card>
 	);
