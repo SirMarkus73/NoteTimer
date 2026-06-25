@@ -9,12 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import {
-	FieldDescription,
-	FieldError,
-	FieldGroup,
-	FieldSet,
-} from "#/components/ui/field";
+import { FieldDescription, FieldGroup, FieldSet } from "#/components/ui/field";
 import { authClient } from "#/lib/auth-client";
 import { useAppForm } from "#/lib/forms/useAppForm";
 
@@ -151,15 +146,9 @@ export function RegisterCard({ className }: Props) {
 				</form>
 			</CardContent>
 			<CardFooter className="flex">
-				<form.Subscribe selector={(state) => state.errors?.[0]}>
-					{(state) =>
-						state && (
-							<FieldError>
-								{(typeof state === "string" && state) || "Error desconocido"}
-							</FieldError>
-						)
-					}
-				</form.Subscribe>
+				<form.AppForm>
+					<form.FormRootError />
+				</form.AppForm>
 
 				<div className="ml-auto">
 					<Link
