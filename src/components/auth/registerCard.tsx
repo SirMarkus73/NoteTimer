@@ -46,13 +46,28 @@ export function RegisterCard({ className }: Props) {
 			});
 
 			if (error) {
-				console.error("Error al registrarse:", error);
-				formApi.setErrorMap({
-					onSubmit: {
-						fields: {},
-						form: "Error al registrarse. Por favor, inténtalo de nuevo mas tarde.",
-					},
-				});
+				switch (error.code) {
+					case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": {
+						formApi.setErrorMap({
+							onSubmit: {
+								fields: {
+									email: "Ya existe una cuenta con este correo electrónico",
+								},
+							},
+						});
+						break;
+					}
+					default: {
+						console.error("Error desconocido al registrarse:", error);
+						formApi.setErrorMap({
+							onSubmit: {
+								fields: {},
+								form: "Ha ocurrido un error desconocido. Por favor, inténtalo de nuevo más tarde.",
+							},
+						});
+					}
+				}
+
 				return;
 			}
 
