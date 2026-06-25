@@ -53,6 +53,7 @@ export function RegisterCard({ className }: Props) {
 						form: "Error al registrarse. Por favor, inténtalo de nuevo mas tarde.",
 					},
 				});
+				return;
 			}
 
 			navigate({ to: "/dashboard" });
