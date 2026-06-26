@@ -6,13 +6,7 @@ export function FormRootError() {
 
 	return (
 		<form.Subscribe selector={(state) => state.errors?.[0]}>
-			{(state) =>
-				state && (
-					<FieldError>
-						{(typeof state === "string" && state) || "Error desconocido"}
-					</FieldError>
-				)
-			}
+			{(state) => typeof state === "string" && <FieldError>{state}</FieldError>}
 		</form.Subscribe>
 	);
 }

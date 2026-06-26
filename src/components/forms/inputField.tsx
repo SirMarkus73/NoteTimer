@@ -1,4 +1,5 @@
 import { useFieldContext } from "#/lib/forms/useAppForm";
+import { cn } from "#/lib/utils";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 
@@ -11,7 +12,15 @@ export function InputField({ label, ...props }: Props) {
 
 	return (
 		<Field>
-			<FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+			<FieldLabel
+				htmlFor={field.name}
+				className={cn(
+					props.required &&
+						"after:content-['requerido'] after:text-destructive",
+				)}
+			>
+				{label}
+			</FieldLabel>
 
 			<Input
 				id={field.name}
