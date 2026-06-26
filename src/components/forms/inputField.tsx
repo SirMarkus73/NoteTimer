@@ -30,7 +30,7 @@ export function InputField({ label, ...props }: Props) {
 				onChange={(e) => field.handleChange(e.target.value)}
 				{...props}
 			/>
-			{field.state.meta.errors.length > 0 && (
+			{field.state.meta.isDirty && field.state.meta.errors.length > 0 && (
 				<FieldError>
 					{typeof field.state.meta.errors[0] === "string"
 						? field.state.meta.errors[0]
