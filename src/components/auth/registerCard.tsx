@@ -100,6 +100,7 @@ export function RegisterCard({ className }: Props) {
 									{(field) => (
 										<field.InputField
 											label="Nombre completo"
+											required
 											type="text"
 											autoComplete="name"
 											placeholder="Evil Rabbit"
@@ -113,6 +114,7 @@ export function RegisterCard({ className }: Props) {
 									{(field) => (
 										<field.InputField
 											label="Correo electrónico"
+											required
 											type="email"
 											autoComplete="email"
 											placeholder="evil.rabbit@example.com"
@@ -126,6 +128,7 @@ export function RegisterCard({ className }: Props) {
 									{(field) => (
 										<field.InputField
 											label="Contraseña"
+											required
 											type="password"
 											autoComplete="new-password"
 											placeholder="••••••••"
@@ -151,6 +154,7 @@ export function RegisterCard({ className }: Props) {
 										<field.InputField
 											label="Repetir contraseña"
 											type="password"
+											required
 											autoComplete="new-password"
 											placeholder="••••••••"
 										/>

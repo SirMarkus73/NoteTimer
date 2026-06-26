@@ -99,6 +99,7 @@ export function LoginCard({ className }: Props) {
 									<field.InputField
 										label="Correo electrónico"
 										type="email"
+										required
 										autoComplete="email"
 										placeholder="evil.rabbit@example.com"
 									/>
@@ -110,6 +111,7 @@ export function LoginCard({ className }: Props) {
 									<field.InputField
 										label="Contraseña"
 										type="password"
+										required
 										autoComplete="current-password"
 										placeholder="Your password"
 									/>
