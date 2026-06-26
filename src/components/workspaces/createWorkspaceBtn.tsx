@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { Plus } from "lucide-react";
 import { type SubmitEvent, useState } from "react";
 import z from "zod";
@@ -13,15 +12,9 @@ import {
 	DialogTrigger,
 } from "#/components/ui/dialog";
 import { authClient } from "#/lib/auth-client";
-import {
-	Field,
-	FieldError,
-	FieldGroup,
-	FieldLabel,
-	FieldSet,
-} from "../ui/field";
-import { Input } from "../ui/input";
-import { Spinner } from "../ui/spinner";
+import { useAppForm } from "#/lib/forms/useAppForm";
+import { checkSlugAvailability } from "#/lib/workspaces/checkSlugAvailability";
+import { FieldGroup, FieldSet } from "../ui/field";
 
 type Props = {
 	className?: string;
@@ -43,7 +36,7 @@ const defaultValues: z.infer<typeof formSchema> = {
 
 export function CreateWorkspaceBtn({ className }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues,
 		validators: {
 			onChange: formSchema,
@@ -78,88 +71,38 @@ export function CreateWorkspaceBtn({ className }: Props) {
 						account and remove your data from our servers.
 					</DialogDescription>
 				</DialogHeader>
-				<form id="create-project-form" onSubmit={handleSubmit}>
+				<form id={form.formId} onSubmit={handleSubmit}>
 					<FieldSet>
 						<FieldGroup>
-							{
-								<form.Subscribe>
-									{({ isSubmitting }) => (
-										<>
-											<form.Field name="name">
-												{(field) => (
-													<Field>
-														<FieldLabel htmlFor={field.name}>
-															Nombre del proyecto
-														</FieldLabel>
-														<Input
-															name={field.name}
-															id={field.name}
-															onChange={(e) =>
-																field.handleChange(e.target.value)
-															}
-															onBlur={field.handleBlur}
-															disabled={isSubmitting}
-														/>
-														{field.state.meta.errors?.[0]?.message && (
-															<FieldError>
-																{field.state.meta.errors[0].message}
-															</FieldError>
-														)}
-													</Field>
-												)}
-											</form.Field>
-											<form.Field
-												name="slug"
-												validators={{
-													onChangeAsyncDebounceMs: 750,
-													onChangeAsync: async ({ value }) => {
-														const response =
-															await authClient.organization.checkSlug({
-																slug: value,
-															});
+							<form.AppField name="name">
+								{(field) => (
+									<field.InputField
+										label="Nombre del proyecto"
+										autoComplete="off"
+									/>
+								)}
+							</form.AppField>
 
-														if (response.error) {
-															switch (response.error.code) {
-																case "ORGANIZATION_SLUG_ALREADY_TAKEN": {
-																	return "El slug ya está en uso. Por favor, elige otro.";
-																}
-																default: {
-																	return "Error desconocido al verificar el slug. Por favor, inténtalo de nuevo.";
-																}
-															}
-														}
-													},
-												}}
-											>
-												{(field) => (
-													<Field>
-														<FieldLabel htmlFor={field.name}>
-															Slug del proyecto
-														</FieldLabel>
-														<Input
-															name={field.name}
-															id={field.name}
-															onChange={(e) =>
-																field.handleChange(e.target.value)
-															}
-															onBlur={field.handleBlur}
-															disabled={isSubmitting}
-														/>
+							<form.AppField
+								name="slug"
+								validators={{
+									onChangeAsyncDebounceMs: 750,
+									onChangeAsync: async ({ value }) => {
+										const { error } = await checkSlugAvailability(value);
 
-														{field.state.meta.errors.length > 0 && (
-															<FieldError>
-																{typeof field.state.meta.errors[0] === "string"
-																	? field.state.meta.errors[0]
-																	: field.state.meta.errors[0]?.message}
-															</FieldError>
-														)}
-													</Field>
-												)}
-											</form.Field>
-										</>
-									)}
-								</form.Subscribe>
-							}
+										if (error) {
+											return error.message;
+										}
+									},
+								}}
+							>
+								{(field) => (
+									<field.InputField
+										label="Slug del proyecto"
+										autoComplete="off"
+									/>
+								)}
+							</form.AppField>
 						</FieldGroup>
 					</FieldSet>
 				</form>
@@ -171,19 +114,9 @@ export function CreateWorkspaceBtn({ className }: Props) {
 					>
 						Cancelar
 					</Button>
-					<form.Subscribe>
-						{({ isSubmitting }) => (
-							<Button
-								variant="default"
-								size="sm"
-								form="create-project-form"
-								type="submit"
-							>
-								{isSubmitting && <Spinner data-icon="inline-start" />}
-								Crear
-							</Button>
-						)}
-					</form.Subscribe>
+					<form.AppForm>
+						<form.SubmitButton label="Crear" />
+					</form.AppForm>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
