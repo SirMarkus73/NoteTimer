@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { MailIcon, UserIcon } from "lucide-react";
 import { ChangePasswordBtn } from "#/components/account/changePasswordBtn";
 import { LogoutBtn } from "#/components/account/logoutBtn";
-import { Button } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
