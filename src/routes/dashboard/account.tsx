@@ -19,8 +19,7 @@ export const Route = createFileRoute("/dashboard/account")({
 });
 
 function Account() {
-	const { data: userSession } = authClient.useSession();
-
+	const { data: userSession, isPending } = authClient.useSession();
 	const user = userSession?.user;
 
 	return (
@@ -44,9 +43,8 @@ function Account() {
 				</Marker>
 			</CardContent>
 			<CardFooter className="justify-end gap-2">
-				<Button>Editar perfil</Button>
-				<ChangePasswordBtn variant="secondary" />
-				<LogoutBtn variant="destructive" />
+				<ChangePasswordBtn disabled={isPending} variant="secondary" />
+				<LogoutBtn disabled={isPending} variant="destructive" />
 			</CardFooter>
 		</Card>
 	);

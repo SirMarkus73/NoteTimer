@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
 	BadgeCheckIcon,
 	BellIcon,
@@ -20,6 +20,7 @@ import { authClient } from "#/lib/auth-client";
 
 export function UserDropdown() {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const { data: session, isPending } = authClient.useSession();
 	const userName =
@@ -67,7 +68,12 @@ export function UserDropdown() {
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => authClient.signOut()}>
+						<DropdownMenuItem
+							onClick={() => {
+								authClient.signOut();
+								navigate({ to: "/" });
+							}}
+						>
 							<LogOutIcon />
 							Cerrar sesión
 						</DropdownMenuItem>
