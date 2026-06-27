@@ -11,6 +11,7 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import { Marker, MarkerContent, MarkerIcon } from "#/components/ui/marker";
+import { Skeleton } from "#/components/ui/skeleton";
 import { authClient } from "#/lib/auth-client";
 
 export const Route = createFileRoute("/dashboard/account")({
@@ -32,13 +33,17 @@ function Account() {
 					<MarkerIcon>
 						<UserIcon />
 					</MarkerIcon>
-					<MarkerContent>{user?.name}</MarkerContent>
+					<MarkerContent>
+						{isPending ? <Skeleton className="h-4 w-32" /> : user?.name}
+					</MarkerContent>
 				</Marker>
 				<Marker>
 					<MarkerIcon>
 						<MailIcon />
 					</MarkerIcon>
-					<MarkerContent>{user?.email}</MarkerContent>
+					<MarkerContent>
+						{isPending ? <Skeleton className="h-4 w-32" /> : user?.email}
+					</MarkerContent>
 				</Marker>
 			</CardContent>
 			<CardFooter className="justify-end gap-2">
