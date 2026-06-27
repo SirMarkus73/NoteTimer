@@ -1,32 +1,8 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { createIsomorphicFn } from "@tanstack/react-start";
-import { getRequestHeaders } from "@tanstack/react-start/server";
 import { AppHeader } from "#/components/app/appHeader";
 import { AppSidebar } from "#/components/app/appSidebar";
 import { SidebarProvider } from "#/components/ui/sidebar";
-import { auth } from "#/lib/auth";
-import { authClient } from "#/lib/auth-client";
-
-const getSession = createIsomorphicFn()
-	.client(async () => {
-		const { data, error } = await authClient.getSession();
-
-		if (error) {
-			console.error("Error fetching session:", error);
-		}
-
-		return data;
-	})
-	.server(async () => {
-		const headers = getRequestHeaders();
-		try {
-			return await auth.api.getSession({
-				headers,
-			});
-		} catch (error) {
-			console.error("Error fetching session:", error);
-		}
-	});
+import { getSession } from "#/lib/auth/getSession";
 
 export const Route = createFileRoute("/dashboard")({
 	async beforeLoad() {
