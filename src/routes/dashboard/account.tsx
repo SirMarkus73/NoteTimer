@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MailIcon, UserIcon } from "lucide-react";
+import { ChangePasswordBtn } from "#/components/account/changePasswordBtn";
 import { LogoutBtn } from "#/components/account/logoutBtn";
 import { Button } from "#/components/ui/button";
 import {
@@ -10,7 +11,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-
 import { Marker, MarkerContent, MarkerIcon } from "#/components/ui/marker";
 import { authClient } from "#/lib/auth-client";
 
@@ -45,7 +45,7 @@ function Account() {
 			</CardContent>
 			<CardFooter className="justify-end gap-2">
 				<Button>Editar perfil</Button>
-				<Button variant="secondary">Cambiar contraseña</Button>
+				<ChangePasswordBtn variant="secondary" />
 				<LogoutBtn variant="destructive" />
 			</CardFooter>
 		</Card>
