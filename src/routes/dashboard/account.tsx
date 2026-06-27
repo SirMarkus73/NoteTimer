@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { MailIcon, UserIcon } from "lucide-react";
+import { LogoutBtn } from "#/components/account/logoutBtn";
+import { Button } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
+
+import { Marker, MarkerContent, MarkerIcon } from "#/components/ui/marker";
 import { authClient } from "#/lib/auth-client";
 
 export const Route = createFileRoute("/dashboard/account")({
@@ -13,23 +19,35 @@ export const Route = createFileRoute("/dashboard/account")({
 });
 
 function Account() {
-	const { data: session } = authClient.useSession();
+	const { data: userSession } = authClient.useSession();
+
+	const user = userSession?.user;
 
 	return (
-		<main className="min-h-screen grid place-items-center">
-			<Card>
-				<CardHeader>
-					<CardTitle>Cuenta</CardTitle>
-					<CardDescription>Gestión de tu cuenta</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<p>Aquí podrás gestionar tu cuenta, cambiar tu contraseña, etc.</p>
-
-					<h3>
-						Tu token de acceso es: <code>{session?.session.token}</code>
-					</h3>
-				</CardContent>
-			</Card>
-		</main>
+		<Card className="w-full">
+			<CardHeader>
+				<CardTitle>Cuenta</CardTitle>
+				<CardDescription>Gestión de tu cuenta</CardDescription>
+			</CardHeader>
+			<CardContent className="flex flex-col gap-3">
+				<Marker>
+					<MarkerIcon>
+						<UserIcon />
+					</MarkerIcon>
+					<MarkerContent>{user?.name}</MarkerContent>
+				</Marker>
+				<Marker>
+					<MarkerIcon>
+						<MailIcon />
+					</MarkerIcon>
+					<MarkerContent>{user?.email}</MarkerContent>
+				</Marker>
+			</CardContent>
+			<CardFooter className="justify-end gap-2">
+				<Button>Editar perfil</Button>
+				<Button variant="secondary">Cambiar contraseña</Button>
+				<LogoutBtn variant="destructive" />
+			</CardFooter>
+		</Card>
 	);
 }
