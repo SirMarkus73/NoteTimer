@@ -7,6 +7,8 @@ import {
 	ItemMedia,
 	ItemTitle,
 } from "#/components/ui/item";
+import { Marker, MarkerContent, MarkerIcon } from "#/components/ui/marker";
+import { Spinner } from "#/components/ui/spinner";
 import { useTasks } from "#/lib/tasks/useTasks";
 import { DeleteTaskBtn } from "./DeleteTaskBtn";
 
@@ -14,7 +16,14 @@ export function TaskList() {
 	const { data: tasks, isLoading, isError, error } = useTasks({});
 
 	if (isLoading) {
-		return <div className="p-8">Loading...</div>;
+		return (
+			<Marker>
+				<MarkerIcon>
+					<Spinner />
+				</MarkerIcon>
+				<MarkerContent>Cargando tareas</MarkerContent>
+			</Marker>
+		);
 	}
 
 	if (isError) {

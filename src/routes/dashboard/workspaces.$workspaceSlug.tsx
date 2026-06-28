@@ -8,7 +8,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import { authClient } from "#/lib/auth-client";
+import { getFullOrganization } from "#/lib/organizations/getFullOrganization";
+import { setActiveOrganization } from "#/lib/organizations/setActiveOrganization";
 
 export const Route = createFileRoute("/dashboard/workspaces/$workspaceSlug")({
 	component: RouteComponent,
@@ -19,11 +20,9 @@ export const Route = createFileRoute("/dashboard/workspaces/$workspaceSlug")({
 
 		const { workspaceSlug } = params;
 
-		const response = await authClient.organization.setActive({
-			organizationSlug: workspaceSlug,
-		});
+		const { error } = await setActiveOrganization(workspaceSlug);
 
-		if (response.error) {
+		if (error) {
 			throw redirect({
 				to: "/dashboard",
 			});
@@ -32,14 +31,9 @@ export const Route = createFileRoute("/dashboard/workspaces/$workspaceSlug")({
 	loader: async ({ params }) => {
 		const { workspaceSlug } = params;
 
-		const { data: workspace, error } =
-			await authClient.organization.getFullOrganization({
-				query: {
-					organizationSlug: workspaceSlug,
-				},
-			});
+		const { data: workspace, error } = await getFullOrganization(workspaceSlug);
 
-		if (error) {
+		if (error || !workspace) {
 			throw redirect({
 				to: "/dashboard",
 			});
