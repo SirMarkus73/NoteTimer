@@ -8,7 +8,7 @@ import {
 	updateTaskSchema,
 } from "#/db/schema/tasks";
 import { auth } from "#/lib/auth";
-import { authenticatedBase, orgAuthenticatedBase } from "./base";
+import { orgAuthenticatedBase } from "./base";
 
 export const createTask = orgAuthenticatedBase
 	.route({
@@ -46,7 +46,7 @@ export const createTask = orgAuthenticatedBase
 		return newTask;
 	});
 
-export const listTasks = authenticatedBase
+export const listTasks = orgAuthenticatedBase
 	.route({
 		method: "GET",
 		path: "/tasks",
@@ -59,15 +59,7 @@ export const listTasks = authenticatedBase
 		}),
 	)
 	.handler(async ({ context: ctx, errors, input }) => {
-		const { session, headers } = ctx;
-
-		const orgId = session.activeOrganizationId;
-
-		if (!orgId) {
-			throw errors.BAD_REQUEST({
-				message: "No active organization selected",
-			});
-		}
+		const { headers, activeOrganizationId } = ctx;
 
 		try {
 			await auth.api.hasPermission({
@@ -86,7 +78,8 @@ export const listTasks = authenticatedBase
 
 		try {
 			return await db.query.tasks.findMany({
-				where: (tasks, { eq }) => eq(tasks.organizationId, orgId),
+				where: (tasks, { eq }) =>
+					eq(tasks.organizationId, activeOrganizationId),
 				limit: input?.limit ?? 10,
 				offset: input?.cursor ?? 0,
 			});
