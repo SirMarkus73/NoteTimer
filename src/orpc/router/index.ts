@@ -2,6 +2,7 @@ import {
 	createTask,
 	deleteTask,
 	getTask,
+	getTasksByCompletionDate,
 	listTasks,
 	updateTask,
 } from "./tasks";
@@ -13,5 +14,6 @@ export default {
 		get: getTask,
 		update: updateTask,
 		delete: deleteTask,
+		getByCompletionDate: getTasksByCompletionDate,
 	},
 };

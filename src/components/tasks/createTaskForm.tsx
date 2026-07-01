@@ -1,3 +1,4 @@
+import { isDefinedError } from "@orpc/client";
 import type { SubmitEvent } from "react";
 import { type NewTask, newTaskSchema } from "#/db/schema/tasks";
 import { useAppForm } from "#/lib/forms/useAppForm";
@@ -13,33 +14,48 @@ import {
 
 const defaultValues: NewTask = {
 	title: "",
-	plannedCompletion: undefined,
+	plannedCompletionDate: undefined,
+	plannedCompletionTime: undefined,
 	status: undefined,
 };
 
 export function CreateTaskForm() {
-	const { mutateAsync: createTask } = useCreateTask();
+	const { mutate: createTask } = useCreateTask();
 
 	const form = useAppForm({
 		defaultValues,
 		validators: {
 			onChange: newTaskSchema,
 		},
+
 		async onSubmit({ value, formApi }) {
-			try {
-				await createTask({
+			createTask(
+				{
 					title: value.title,
-					plannedCompletion: value.plannedCompletion,
+					plannedCompletionDate: value.plannedCompletionDate,
+					plannedCompletionTime: value.plannedCompletionTime,
 					status: value.status,
-				});
-			} catch {
-				formApi.setErrorMap({
-					onSubmit: {
-						fields: {},
-						form: "Ocurrió un error desconocido, por favor intente nuevamente",
+				},
+				{
+					onError: (error) => {
+						if (isDefinedError(error)) {
+							formApi.setErrorMap({
+								onSubmit: {
+									fields: {},
+									form: error.message,
+								},
+							});
+						} else {
+							formApi.setErrorMap({
+								onSubmit: {
+									fields: {},
+									form: "Ha ocurrido un error desconocido, por favor intente nuevamente",
+								},
+							});
+						}
 					},
-				});
-			}
+				},
+			);
 		},
 	});
 
@@ -69,7 +85,7 @@ export function CreateTaskForm() {
 					}
 
 					{
-						<form.AppField name="plannedCompletion">
+						<form.AppField name="plannedCompletionDate">
 							{(field) => (
 								<field.DateField
 									label="Fecha de finalización"
@@ -77,6 +93,12 @@ export function CreateTaskForm() {
 									disabled={(date) => date < today()}
 								/>
 							)}
+						</form.AppField>
+					}
+
+					{
+						<form.AppField name="plannedCompletionTime">
+							{(field) => <field.TimeField label="Hora de finalización" />}
 						</form.AppField>
 					}
 

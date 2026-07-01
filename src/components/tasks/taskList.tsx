@@ -44,10 +44,10 @@ export function TaskList() {
 					<ItemContent>
 						<ItemTitle>{task.title}</ItemTitle>
 						<ItemDescription>
-							Planned Completion:{" "}
-							{task.plannedCompletion
-								? task.plannedCompletion.toLocaleDateString()
-								: "N/A"}
+							Fecha de finalización planificada
+							{task.plannedCompletionDate
+								? `: ${task.plannedCompletionDate}${task.plannedCompletionTime ? ` - ${task.plannedCompletionTime}` : ""}`
+								: ""}
 						</ItemDescription>
 					</ItemContent>
 					<ItemActions>

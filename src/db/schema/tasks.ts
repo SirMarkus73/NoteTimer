@@ -1,5 +1,14 @@
-import { relations } from "drizzle-orm";
-import { pgEnum, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
+import {
+	check,
+	date,
+	pgEnum,
+	pgTable,
+	serial,
+	text,
+	time,
+	timestamp,
+} from "drizzle-orm/pg-core";
 import {
 	createInsertSchema,
 	createSelectSchema,
@@ -16,24 +25,38 @@ export const taskStatusEnum = pgEnum("task_status", [
 	"completed",
 ]); // Define the enum for task status
 
-export const tasks = pgTable("task", {
-	id: serial().primaryKey(),
-	organizationId: text()
-		.notNull()
-		.references(() => organization.id, {
-			onDelete: "cascade",
-			onUpdate: "cascade",
-		}),
-	title: text().notNull(),
-	status: taskStatusEnum().default("pending").notNull(),
+export const tasks = pgTable(
+	"task",
+	{
+		id: serial().primaryKey(),
+		organizationId: text()
+			.notNull()
+			.references(() => organization.id, {
+				onDelete: "cascade",
+				onUpdate: "cascade",
+			}),
+		title: text().notNull(),
+		status: taskStatusEnum().default("pending").notNull(),
 
-	plannedCompletion: timestamp("planned_completion"),
-	createdAt: timestamp("created_at").defaultNow(),
-	updatedAt: timestamp("updated_at")
-		.defaultNow()
-		.$onUpdate(() => new Date())
-		.notNull(),
-});
+		plannedCompletionDate: date("planned_completion"),
+		plannedCompletionTime: time("planned_completion_time"),
+		createdAt: timestamp("created_at").defaultNow(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => new Date())
+			.notNull(),
+	},
+	(table) => [
+		check(
+			"planned_completion_date_on_future",
+			sql`${table.plannedCompletionDate} >= CURRENT_DATE`,
+		),
+		check(
+			"planned_completion_time_requires_date",
+			sql`${table.plannedCompletionTime} IS NULL OR ${table.plannedCompletionDate} IS NOT NULL`,
+		),
+	],
+);
 
 // Relations
 export const taskRelations = relations(tasks, ({ one }) => ({
@@ -47,9 +70,9 @@ export const taskRelations = relations(tasks, ({ one }) => ({
 export const taskSchema = createSelectSchema(tasks);
 export const newTaskSchema = createInsertSchema(tasks, {
 	title: (s) => s.min(5, "El titulo debe tener al menos 5 caracteres"),
-	plannedCompletion: (s) =>
+	plannedCompletionDate: (s) =>
 		s
-			.refine((date) => !date || date >= today(), {
+			.refine((date) => !date || new Date(date) >= today(), {
 				error: "La fecha de finalización planificada debe ser en el futuro",
 			})
 			.optional(),

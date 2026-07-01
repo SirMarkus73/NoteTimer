@@ -8,7 +8,73 @@ import {
 	updateTaskSchema,
 } from "#/db/schema/tasks";
 import { auth } from "#/lib/auth";
-import { orgAuthenticatedBase } from "./base";
+import { authenticatedBase, orgAuthenticatedBase } from "./base";
+
+const paginatedInputSchema = z.object({
+	cursor: z.number().optional(),
+	limit: z.number().optional(),
+});
+
+export const getTasksByCompletionDate = authenticatedBase
+	.route({
+		method: "GET",
+		path: "/tasks/all",
+		tags: ["tasks"],
+	})
+	.input(paginatedInputSchema)
+	.handler(async ({ context: ctx, errors }) => {
+		const { headers } = ctx;
+
+		const organizations = await auth.api.listOrganizations({
+			headers,
+		});
+
+		const orgsId = organizations.map((org) => org.id);
+
+		try {
+			const taskList = await db.query.tasks.findMany({
+				where: (tasks, { inArray, isNotNull, and }) =>
+					and(
+						inArray(tasks.organizationId, orgsId),
+						isNotNull(tasks.plannedCompletionDate),
+					),
+				with: {
+					organization: {
+						columns: {
+							id: true,
+							slug: true,
+							name: true,
+						},
+					},
+				},
+				orderBy: (tasks, { asc }) => [
+					asc(tasks.plannedCompletionDate),
+					asc(tasks.plannedCompletionTime),
+				],
+			});
+
+			const groupedTasks = new Map<string, typeof taskList>();
+
+			for (const task of taskList) {
+				const dateKey = task.plannedCompletionDate;
+
+				if (!dateKey) continue;
+
+				if (!groupedTasks.has(dateKey)) {
+					groupedTasks.set(dateKey, []);
+				}
+
+				groupedTasks.get(dateKey)?.push(task);
+			}
+
+			return groupedTasks;
+		} catch (error) {
+			console.error("Error fetching tasks:", error);
+			throw errors.INTERNAL_SERVER_ERROR({
+				message: "Error fetching tasks",
+			});
+		}
+	});
 
 export const createTask = orgAuthenticatedBase
 	.route({
@@ -31,9 +97,16 @@ export const createTask = orgAuthenticatedBase
 			})
 			.catch(() => {
 				throw errors.FORBIDDEN({
-					message: "You do not have permission to create tasks",
+					message: "No tiene permiso para crear tareas",
 				});
 			});
+
+		if (input.plannedCompletionTime && !input.plannedCompletionDate) {
+			throw errors.BAD_REQUEST({
+				message:
+					"La hora de finalización no puede establecerse sin una fecha de finalización",
+			});
+		}
 
 		const newTask = await db
 			.insert(tasks)
@@ -41,7 +114,13 @@ export const createTask = orgAuthenticatedBase
 				...input,
 				organizationId: activeOrganizationId,
 			})
-			.returning();
+			.returning()
+			.catch((error) => {
+				console.error("Error creating task:", error);
+				throw errors.INTERNAL_SERVER_ERROR({
+					message: "Error creando una tarea, por favor intente nuevamente",
+				});
+			});
 
 		return newTask;
 	});
@@ -52,12 +131,7 @@ export const listTasks = orgAuthenticatedBase
 		path: "/tasks",
 		tags: ["tasks"],
 	})
-	.input(
-		z.object({
-			cursor: z.number().optional(),
-			limit: z.number().optional(),
-		}),
-	)
+	.input(paginatedInputSchema)
 	.handler(async ({ context: ctx, errors, input }) => {
 		const { headers, activeOrganizationId } = ctx;
 

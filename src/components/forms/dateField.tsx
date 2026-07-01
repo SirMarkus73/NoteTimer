@@ -19,7 +19,7 @@ type Props = {
 } & Omit<CalendarProps, "selected" | "onSelect" | "mode" | "defaultMonth">;
 
 export function DateField({ label, ...calendarProps }: Props) {
-	const field = useFieldContext<Date | undefined>();
+	const field = useFieldContext<string | undefined>();
 
 	return (
 		<Field>
@@ -55,11 +55,15 @@ export function DateField({ label, ...calendarProps }: Props) {
 						<Calendar
 							{...calendarProps}
 							mode="single"
-							selected={field.state.value || undefined}
+							selected={
+								field.state.value ? new Date(field.state.value) : undefined
+							}
 							onSelect={(date) => {
-								field.handleChange(date);
+								field.handleChange(date?.toDateString());
 							}}
-							defaultMonth={field.state.value || new Date()}
+							defaultMonth={
+								field.state.value ? new Date(field.state.value) : new Date()
+							}
 						/>
 					</PopoverContent>
 				</Popover>
