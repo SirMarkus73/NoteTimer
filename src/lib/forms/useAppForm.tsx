@@ -3,6 +3,7 @@ import { DateField } from "#/components/forms/dateField";
 import { FormRootError } from "#/components/forms/formRootError";
 import { InputField } from "#/components/forms/inputField";
 import { SubmitButton } from "#/components/forms/submitButton";
+import { TimeField } from "#/components/forms/timeField";
 
 const { fieldContext, formContext, useFormContext, useFieldContext } =
 	createFormHookContexts();
@@ -13,6 +14,7 @@ const { useAppForm } = createFormHook({
 	fieldComponents: {
 		InputField,
 		DateField,
+		TimeField,
 	},
 	formComponents: {
 		SubmitButton,
